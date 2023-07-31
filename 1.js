@@ -116,8 +116,23 @@ console.log(lazyMapper.next().value)
 console.log(lazyMapper.next().done)
 
 function fibonacciGenerator() {
+    const  cache = {}
     let prev = 0
     let curr = 1
+
+    function fibonacci(n) {
+        if (n in cache) {
+            return cache[n]
+        }
+
+        if (n === 0) return 0
+        else if (n === 1) return 1
+        else {
+            const result = fibonacci(n - 1) + fibonacci(n - 2);
+            cache[n] = result;
+            return result;
+        }
+    }
 
     return {
         next: function () {
@@ -125,12 +140,15 @@ function fibonacciGenerator() {
             curr = prev + curr
             prev = result
             return {value: result}
+        },
+        fibonacciNumber: function (index) {
+            return fibonacci(index)
         }
     }
 }
 
 const fibGenerator = fibonacciGenerator()
-console.log(fibGenerator.next().value)
+console.log(fibGenerator.fibonacciNumber(8))
 console.log(fibGenerator.next().value)
 console.log(fibGenerator.next().value)
 console.log(fibGenerator.next().value)
