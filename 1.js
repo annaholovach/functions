@@ -1,9 +1,11 @@
 // 1
-const calculateDiscountedPrice = (array, sale) => array.map(item => item * (1 - sale/100)).map(item => Math.round(item))
+const calculateDiscountedPrice = (array, sale) => array.every(item => typeof item === 'number') && typeof sale === 'number' ?
+                                  array.map(item => item * (1 - sale/100)).map(item => Math.round(item)) : 'Cannot calculate'
 
 console.log(calculateDiscountedPrice([50, 60, 70], 50))
 
-const  calculateTotalPrice = array => array.reduce((prev, curr) => prev + curr, 0)
+const  calculateTotalPrice = array => array.every(item => typeof item === 'number') ?
+                             array.reduce((prev, curr) => prev + curr, 0) : 'Cannot add'
 
 console.log(calculateTotalPrice([50, 60, 70]))
 
@@ -21,22 +23,22 @@ let person = {
 
 console.log(getFullName(person))
 
-const filterUniqueWords = str => Array.from(str
-                                                .split(' ')
-                                                .map(word => word.toLowerCase())
-                                                .sort()
-                                                .reduce((uniqueWords, word) => uniqueWords.add(word),
-                                                    new Set()))
+const filterUniqueWords = str => typeof str !== 'string' ? 'Cannot filter' : Array.from(str
+                                                                                            .split(' ')
+                                                                                            .map(word => word.toLowerCase())
+                                                                                            .sort()
+                                                                                            .reduce((uniqueWords, word) => uniqueWords.add(word),
+                                                                                                new Set()))
 
 console.log(filterUniqueWords('Хочешь хочешь хочешь жить жить моей жизнью жизнью жизнью жизнью, я Бы так не думал, моя моя моя моя жизнь не сахар сахар сахар сахар кто вообще ее придумал'))
 
-const avarage = arr => arr.reduce((prev, curr) => prev + curr, 0) / arr.length
-const fixed = number => Math.round(number)
-const getAvarageGrade = arr => fixed(avarage(arr.map(student => student.grade)))
+const avarage = arr => arr.every(element => typeof element === 'number') ? arr.reduce((prev, curr) => prev + curr, 0) / arr.length : 'Cannot calculate'
+const fixed = number => typeof number === 'number' ? Math.round(number) : number
+const getAvarageGrade = arr => fixed(avarage(arr.map(student => avarage(student.grades))))
 
-let vasya = { name: "Вася", grade: 1 }
-let petya = { name: "Петя", grade: 5 }
-let masha = { name: "Маша", grade: 12 }
+let vasya = { name: "Вася", grades: [1, 2, 5] }
+let petya = { name: "Петя", grades: [2, 4, 7] }
+let masha = { name: "Маша", grades: [12, 11, 9] }
 let students = [ vasya, petya, masha ]
 
 console.log(getAvarageGrade(students))
